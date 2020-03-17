@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/main.js"
+    "start": "ts-node src/main.ts"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,8 @@
   "homepage": "https://github.com/alon6699/node-server#readme",
   "dependencies": {
     "@types/node": "^13.9.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.8.3"
   }
 }
