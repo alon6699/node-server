@@ -1,28 +1,30 @@
-const router = require('express').Router();
-const fs = require('fs');
-const { promisify } = require('util');
+import * as express from 'express';
+import * as fs from 'fs';
+import { promisify } from 'util';
+
+const router: express.Router = express.Router();
+const path: string = './assets/content.txt';
 const stat = promisify(fs.stat);
 
-const path = './assets/content.txt';
+router.get('/content', (req: express.Request, res: express.Response) => {
+    const readStream: fs.ReadStream = fs.createReadStream(path, { encoding: "utf8" });
 
-router.get('/content', (req, res) => {
-    fs.readFile(path, 'utf8', (error, data) => {
-        if (!error) {
-            res.send(data.toUpperCase());
-        } else {
-            res.send('error while reading a file');
-        }
+    readStream.on('data', (data: string) => {
+        res.send(data.toUpperCase());
+    });
+
+    readStream.on('error', () => {
+        res.status(500).send('Error in reading the file statuses');
     });
 });
 
-router.get('/updateTime', (req, res) => {
-    readLastModifyTime().then(data => res.send(data)).catch(() => res.send('Error in reading the file statuses'));
+router.get('/updateTime', (req: express.Request, res: express.Response) => {
+    readLastModifyTime().then((data: Date) => res.send(data)).catch(() => res.status(500).send('Error in reading the file statuses'));
 });
 
 async function readLastModifyTime(): Promise<Date> {
-
-    const stats = await stat(path);
-    return stats.mtime as Date;
+    const stats: fs.StatsBase<any> = await stat(path);
+    return stats.mtime;
 }
 
 module.exports = router;
