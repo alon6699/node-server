@@ -1,5 +1,8 @@
 const router = require('express').Router();
 const fs = require('fs');
+const { promisify } = require('util');
+const stat = promisify(fs.stat);
+
 const path = './assets/content.txt';
 
 router.get('/content', (req, res) => {
@@ -13,11 +16,12 @@ router.get('/content', (req, res) => {
 });
 
 router.get('/updateTime', (req, res) => {
-    res.send(readLastModifyTime());
+    readLastModifyTime().then(data => res.send(data)).catch(() => res.send('Error in reading the file statuses'));
 });
 
-const readLastModifyTime: () => Date = () => {
-    const stats = fs.statSync(path);
+async function readLastModifyTime(): Promise<Date> {
+
+    const stats = await stat(path);
     return stats.mtime as Date;
 }
 
