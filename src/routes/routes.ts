@@ -27,4 +27,4 @@ async function readLastModifyTime(): Promise<Date> {
     return stats.mtime;
 }
 
-module.exports = router;
+export { router };
