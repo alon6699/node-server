@@ -10,7 +10,7 @@ router.get('/content', (req: express.Request, res: express.Response) => {
     const readStream: fs.ReadStream = fs.createReadStream(path, { encoding: "utf8" });
 
     readStream.on('data', (data: string) => {
-        res.write(data.toUpperCase());
+        res.status(200).write(data.toUpperCase());
     });
 
     readStream.on('close', () => {
