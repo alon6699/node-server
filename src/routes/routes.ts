@@ -23,7 +23,7 @@ router.get('/content', (req: express.Request, res: express.Response) => {
 });
 
 router.get('/updateTime', (req: express.Request, res: express.Response) => {
-    readLastModifyTime().then((data: Date) => res.send(data)).catch(() => res.status(500).send('Error in reading the file statuses'));
+    readLastModifyTime().then((data: Date) => res.status(200).send(data)).catch(() => res.status(500).send('Error in reading the file statuses'));
 });
 
 async function readLastModifyTime(): Promise<Date> {
